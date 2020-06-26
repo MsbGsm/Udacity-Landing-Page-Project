@@ -27,12 +27,16 @@ const sectionElements = document.querySelectorAll('section');
  * 
 */
 
+// Parse data-nav content from and element
 const parseNavDataset = element => element.dataset.nav;
 
+// parse ID from and element
 const parseId = element => element.id;
 
+// Convert a Node List to and array
 const convertNodeListToArray = nodeList => Array.from(nodeList);
 
+// Build the nav link element based on the informations passed as an object
 const buildNavLink = navObject => `<li><a class="menu__link" href="#${navObject.id}" data-link=${navObject.id}>${navObject.navDataset}</a></li>`
 
 /**
@@ -44,6 +48,7 @@ const buildNavLink = navObject => `<li><a class="menu__link" href="#${navObject.
 // build the nav
 const sectionsArray = convertNodeListToArray(sectionElements);
 
+// Return an array of objects contains the infromations used to build the navLinks
 const navLinksInfoArray = sectionsArray.map(sectionElement => {
   return {
     id: parseId(sectionElement),
@@ -62,9 +67,7 @@ navbarListElement.innerHTML = navLinksElementArray.join('');
 // Scroll to anchor ID using scrollIntoView method
 navbarListElement.addEventListener('click', event => {
   event.preventDefault();
-  console.log(event.target.hasAttribute('data-link'))
   const link = event.target.hasAttribute('data-link') ? event.target : null;
-  console.log(link, link.dataset.link)
   if (link) {
     const target = document.querySelector(`#${link.dataset.link}`);
     target.scrollIntoView({block: 'end', behavior: 'smooth'});
@@ -73,22 +76,38 @@ navbarListElement.addEventListener('click', event => {
 })
 
 
+
 /**
  * End Main Functions
  * Begin Events
  * 
 */
 
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
-/* let options = {
+// Watch and set section and navbar links to active using the IntersectionObserver
+let options = {
   root: null,
   rootMargin: '0px',
-  threshold: 0.8
+  threshold: 0.6
 }
 
-let observer = new IntersectionObserver() */
+let observer = new IntersectionObserver(observerCallback, options);
+sectionElements.forEach(element => {
+  observer.observe(document.querySelector(`#${element.id}`));
+})
+
+
+const observerCallback = entries => {
+  entries.forEach(entry => {
+    const linkElement = document.querySelector(`.menu__link[data-link='${entry.target.id}']`);
+    const section = document.querySelector(`#${entry.target.id}`);
+    console.log(linkElement)
+
+    if (entry && entry.isIntersecting) {
+      linkElement.classList.add('active');
+      section.classList.add('active');
+    } else {
+      linkElement.classList.remove('active');
+      section.classList.remove('active');
+    }
+  })
+}
