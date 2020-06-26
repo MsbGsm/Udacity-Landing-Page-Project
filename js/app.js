@@ -33,7 +33,7 @@ const parseId = element => element.id;
 
 const convertNodeListToArray = nodeList => Array.from(nodeList);
 
-const buildNavLink = navObject => `<li data-linkTo=${navObject.id}><a class="menu__link" href="#${navObject.id}">${navObject.navDataset}</a></li>`
+const buildNavLink = navObject => `<li><a class="menu__link" href="#${navObject.id}" data-link=${navObject.id}>${navObject.navDataset}</a></li>`
 
 /**
  * End Helper Functions
@@ -59,7 +59,18 @@ navbarListElement.innerHTML = navLinksElementArray.join('');
 // Add class 'active' to section when near top of viewport
 
 
-// Scroll to anchor ID using scrollTO event
+// Scroll to anchor ID using scrollIntoView method
+navbarListElement.addEventListener('click', event => {
+  event.preventDefault();
+  console.log(event.target.hasAttribute('data-link'))
+  const link = event.target.hasAttribute('data-link') ? event.target : null;
+  console.log(link, link.dataset.link)
+  if (link) {
+    const target = document.querySelector(`#${link.dataset.link}`);
+    target.scrollIntoView({block: 'end', behavior: 'smooth'});
+  }
+  return;
+})
 
 
 /**
@@ -74,10 +85,10 @@ navbarListElement.innerHTML = navLinksElementArray.join('');
 
 // Set sections as active
 
-let options = {
+/* let options = {
   root: null,
   rootMargin: '0px',
   threshold: 0.8
 }
 
-let observer = new IntersectionObserver()
+let observer = new IntersectionObserver() */
