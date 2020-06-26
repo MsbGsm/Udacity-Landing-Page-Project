@@ -76,7 +76,6 @@ navbarListElement.addEventListener('click', event => {
 })
 
 
-
 /**
  * End Main Functions
  * Begin Events
@@ -84,18 +83,6 @@ navbarListElement.addEventListener('click', event => {
 */
 
 // Watch and set section and navbar links to active using the IntersectionObserver
-let options = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 0.6
-}
-
-let observer = new IntersectionObserver(observerCallback, options);
-sectionElements.forEach(element => {
-  observer.observe(document.querySelector(`#${element.id}`));
-})
-
-
 const observerCallback = entries => {
   entries.forEach(entry => {
     const linkElement = document.querySelector(`.menu__link[data-link='${entry.target.id}']`);
@@ -111,3 +98,14 @@ const observerCallback = entries => {
     }
   })
 }
+
+const options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.6
+}
+
+let observer = new IntersectionObserver(observerCallback, options);
+sectionElements.forEach(element => {
+  observer.observe(document.querySelector(`#${element.id}`));
+})
