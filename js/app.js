@@ -33,7 +33,7 @@ const parseId = element => element.id;
 
 const convertNodeListToArray = nodeList => Array.from(nodeList);
 
-const buildNavLink = navObject => `<li><a class="menu__link" href="#${navObject.id}">${navObject.navDataset}</a></li>`
+const buildNavLink = navObject => `<li data-linkTo=${navObject.id}><a class="menu__link" href="#${navObject.id}">${navObject.navDataset}</a></li>`
 
 /**
  * End Helper Functions
@@ -74,4 +74,10 @@ navbarListElement.innerHTML = navLinksElementArray.join('');
 
 // Set sections as active
 
+let options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.8
+}
 
+let observer = new IntersectionObserver()
